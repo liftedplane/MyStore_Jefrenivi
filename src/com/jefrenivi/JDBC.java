@@ -32,6 +32,7 @@ public class JDBC implements Closeable {
 		} catch (SQLException e) {
 			System.out.println("Error connecting to " + url);
 			e.printStackTrace();
+			//kjbsfdfkjb
 		}
 	}
 
