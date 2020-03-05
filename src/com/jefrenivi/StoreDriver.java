@@ -69,7 +69,7 @@ public class StoreDriver {
 	}
 
 	private void viewOrders() throws SQLException {
-		System.out.println("1. View All" + "2. View Open orders\n" + "3. View Closed orders\n" + "4. Sort orders\n"
+		System.out.println("1. View All Orders\n" + "2. View Open orders\n" + "3. View Closed orders\n" + "4. Sort orders\n"
 				+ "5. View Specific order\n");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
