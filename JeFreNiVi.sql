@@ -1,0 +1,93 @@
+DROP DATABASE IF EXISTS jefrenivi;
+CREATE DATABASE jefrenivi;
+USE jefrenivi;
+
+DROP TABLE IF EXISTS Categories;
+CREATE TABLE Categories (
+CategoryID INT PRIMARY KEY AUTO_INCREMENT,
+Name VARCHAR(50),
+Description VARCHAR(255),
+ParentCategoryID int,
+FOREIGN KEY (ParentCategoryID) REFERENCES Categories(CategoryID));
+
+DROP TABLE IF EXISTS Addresses;
+CREATE TABLE Addresses (
+AddressID INT PRIMARY KEY AUTO_INCREMENT,
+Street VARCHAR(50),
+City VARCHAR(50),
+State VARCHAR(2),
+Zip VARCHAR(10));
+
+DROP TABLE IF EXISTS Suppliers;
+CREATE TABLE Suppliers (
+SupplierID INT PRIMARY KEY AUTO_INCREMENT,
+AddressID INT,
+Name VARCHAR(50),
+ContactName VARCHAR(50),
+Phone VARCHAR(13),
+FOREIGN KEY (AddressID) REFERENCES Addresses(AddressID));
+
+DROP TABLE IF EXISTS Products;
+CREATE TABLE Products (
+ProductID VARCHAR(10) PRIMARY KEY,
+CategoryID INT,
+SupplierID INT,
+Name VARCHAR(50),
+Price DECIMAL(13, 2),
+Weight DECIMAL(10, 4),
+Stock INT,
+ReorderLevel INT,
+FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID),
+FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID));
+
+DROP TABLE IF EXISTS Customers;
+CREATE TABLE Customers (
+CustomerID INT PRIMARY KEY AUTO_INCREMENT,
+AddressID INT,
+Name VARCHAR(50),
+Email VARCHAR(50),
+Phone VARCHAR(13),
+FOREIGN KEY (AddressID) REFERENCES Addresses(AddressID));
+
+DROP TABLE IF EXISTS Billables;
+CREATE TABLE Billables (
+BillableID INT PRIMARY KEY AUTO_INCREMENT,
+CustomerID INT,
+Name VARCHAR(50),
+CardNumber VARCHAR(16),
+ExpirationDate DATE,
+CVV VARCHAR(3),
+FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID));
+
+DROP TABLE IF EXISTS Shippers;
+CREATE TABLE Shippers (
+ShipperID INT PRIMARY KEY AUTO_INCREMENT,
+AddressID INT,
+Name VARCHAR(50),
+ContactName VARCHAR(50),
+Phone VARCHAR(13),
+FOREIGN KEY (AddressID) REFERENCES Addresses(AddressID));
+
+DROP TABLE IF EXISTS Orders;
+CREATE TABLE Orders (
+OrderID INT PRIMARY KEY,
+CustomerID INT,
+ShipperID INT,
+BillableID INT,
+Date DATE,
+ShipDate DATE,
+ShipStatus BOOLEAN,
+FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+FOREIGN KEY (ShipperID) REFERENCES Shippers(ShipperID),
+FOREIGN KEY (BillableID) REFERENCES Billables(BillableID));
+
+DROP TABLE IF EXISTS OrderDetails;
+CREATE TABLE OrderDetails (
+OrderID INT,
+ProductID VARCHAR(10),
+Price DECIMAL(13, 2),
+Quantity INT,
+Discount DECIMAL(5, 2),
+PRIMARY KEY (OrderID, ProductID),
+FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+FOREIGN KEY (ProductID) REFERENCES Products(ProductID));
