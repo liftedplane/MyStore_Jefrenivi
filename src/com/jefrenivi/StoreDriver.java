@@ -117,6 +117,10 @@ public class StoreDriver {
 		ResultSet rs = sql.
 	}
 	
+	private void viewClosedOrder() {
+		
+	}
+	
 	
 	
 	private void customers() {
