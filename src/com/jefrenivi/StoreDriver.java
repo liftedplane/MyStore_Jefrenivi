@@ -3,8 +3,6 @@ package com.jefrenivi;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class StoreDriver {
@@ -13,11 +11,15 @@ public class StoreDriver {
 
 	public static void main(String[] args) {
 		sql = new JDBC();
-		new StoreDriver().welcomePage();
+			try {
+				new StoreDriver().welcomePage();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 
 	}
 
-	private void welcomePage() {
+	private void welcomePage() throws SQLException {
 		System.out.println("Welcome to Jeffrenivi!");
 		System.out.println("Select options below\n" + "1. Orders\n" + "2. Customers\n" + "3. Products\n");
 
@@ -44,7 +46,7 @@ public class StoreDriver {
 
 	}
 
-	private void orders() {
+	private void orders() throws SQLException {
 		System.out.println("What would you like to do?");
 		System.out.println("1. View orders\n" + "2. Cancel orders\n");
 		System.out.println("Enter option number");
@@ -55,7 +57,7 @@ public class StoreDriver {
 			break;
 
 		case "2":
-
+			cancelOrders(); //still need to make body for method. waiting on jeff
 			break;
 
 		default:
@@ -157,6 +159,11 @@ public class StoreDriver {
 		int orderId = scan.nextInt();
 		ResultSet rs = sql.getOrder(orderId);
 		displayResults(rs);
+	}
+	
+	//waiting on J
+	private void cancelOrders() {
+		
 	}
 
 	private void customers() {
