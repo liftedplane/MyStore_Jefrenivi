@@ -65,12 +65,18 @@ public class JDBC implements Closeable {
 		return rs;
 	}
 	
-//	public ResultSet getAllOrdersWithTotalGreaterThan(double total) throws SQLException {
-//		String sql = "SELECT Orders.OrderID, CustomerID, Date, ShipStatus, SUM(OrderDetails.Price * OrderDetails.Quantity) AS Total "
-//				+ "FROM Orders JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID "
-//				+ "GROUP BY OrderDetails.OrderID "
-//				+ "ORDER BY Total DESC";
-//	}
+	public ResultSet getAllOrdersWithTotalGreaterThan(double total) throws SQLException {
+		String sql = "SELECT * FROM "
+				+ "(SELECT Orders.OrderID, CustomerID, ShipperID, BillableID, Date, ShipDate, ShipStatus, SUM(Price * Quantity) AS Total "
+				+ "FROM Orders JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID "
+				+ "GROUP BY OrderDetails.OrderID) AS b "
+				+ "WHERE Total > ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setDouble(1, total);
+		ResultSet rs = ps.executeQuery();
+		ps.close();
+		return rs;
+	}
 	
 	public ResultSet getOrder(int orderid) throws SQLException {
 		String sql = "SELECT * FROM Orders WHERE CustomerID = ?";
@@ -97,12 +103,49 @@ public class JDBC implements Closeable {
 		return rs;
 	}
 	
+	public ResultSet getProductsFromOrder(int orderid) throws SQLException {
+		String sql = "SELECT * \r\n" + 
+				"FROM Products p JOIN OrderDetails od ON p.ProductID = od.ProductID\r\n" + 
+				"WHERE od.OrderID = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, orderid);
+		ResultSet rs = ps.executeQuery();
+		ps.close();
+		return rs;
+	}
+	
 	// ---------- PRODUCT QUERIES ----------
+	
+	public ResultSet getAllProducts() throws SQLException {
+		String sql = "SELECT * FROM Products";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		ps.close();
+		return rs;
+	}
 	
 	public ResultSet getProductsFromCategory(int categoryid) throws SQLException {
 		String sql = "SELECT * FROM Products WHERE CategoryID = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, categoryid);
+		ResultSet rs = ps.executeQuery();
+		ps.close();
+		return rs;
+	}
+	
+	// ---------- CUSTOMER QUERIES ----------
+	
+	public ResultSet getAllCustomers() throws SQLException {
+		String sql = "SELECT * FROM CUSTOMER";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		ps.close();
+		return rs;
+	}
+	
+	public ResultSet getCustomersByZip(String zip) throws SQLException {
+		String sql = "SELECT * FROM Customers WHERE Zip = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		ps.close();
 		return rs;
