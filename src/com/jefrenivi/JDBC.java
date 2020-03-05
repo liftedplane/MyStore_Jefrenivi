@@ -18,6 +18,7 @@ public class JDBC implements Closeable {
 	}
 	
 	public void establishConnection() {
+		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		String url = "jdbc:mysql://localhost:3306/jefrenivi";
         System.out.print("Enter User Name: ");
@@ -32,7 +33,6 @@ public class JDBC implements Closeable {
 			System.out.println("Error connecting to " + url);
 			e.printStackTrace();
 		}
-        sc.close();
 	}
 
 	@Override
@@ -44,15 +44,67 @@ public class JDBC implements Closeable {
 		}
 	}
 	
-	public ResultSet allOrders() throws SQLException {
-		String sql = "SELECT * FROM Orders";
+	// ---------- ORDER QUERIES ----------
+	
+	public ResultSet getAllOrders() throws SQLException {
+		String sql = "SELECT OrderID, CustomerID, Date, ShipStatus FROM Orders";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 		ps.close();
 		return rs;
 	}
 	
-//	public ResultSet allOrdersDescendingTotal() throws SQLException {
-//		String sql = "SELECT *, SUM(OrderDetails.Price FROM Orders JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID "
+	public ResultSet getAllOrdersDescendingTotal() throws SQLException {
+		String sql = "SELECT Orders.OrderID, CustomerID, Date, ShipStatus, SUM(OrderDetails.Price * OrderDetails.Quantity) AS Total "
+				+ "FROM Orders JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID "
+				+ "GROUP BY OrderDetails.OrderID "
+				+ "ORDER BY Total DESC";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		ps.close();
+		return rs;
+	}
+	
+//	public ResultSet getAllOrdersWithTotalGreaterThan(double total) throws SQLException {
+//		String sql = "SELECT Orders.OrderID, CustomerID, Date, ShipStatus, SUM(OrderDetails.Price * OrderDetails.Quantity) AS Total "
+//				+ "FROM Orders JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID "
+//				+ "GROUP BY OrderDetails.OrderID "
+//				+ "ORDER BY Total DESC";
 //	}
+	
+	public ResultSet getOrder(int orderid) throws SQLException {
+		String sql = "SELECT * FROM Orders WHERE CustomerID = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, orderid);
+		ResultSet rs = ps.executeQuery();
+		ps.close();
+		return rs;
+	}
+	
+	public ResultSet getOpenOrders() throws SQLException {
+		String sql = "SELECT * FROM Orders WHERE ShipStatus = FALSE";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		ps.close();
+		return rs;
+	}
+	
+	public ResultSet getClosedOrders() throws SQLException {
+		String sql = "SELECT * FROM Orders WHERE ShipStatus = TRUE";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		ps.close();
+		return rs;
+	}
+	
+	// ---------- PRODUCT QUERIES ----------
+	
+	public ResultSet getProductsFromCategory(int categoryid) throws SQLException {
+		String sql = "SELECT * FROM Products WHERE CategoryID = ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setInt(1, categoryid);
+		ResultSet rs = ps.executeQuery();
+		ps.close();
+		return rs;
+	}
 }
