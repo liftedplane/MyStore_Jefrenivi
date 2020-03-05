@@ -49,9 +49,7 @@ public class JDBC implements Closeable {
 	public ResultSet getAllOrders() throws SQLException {
 		String sql = "SELECT OrderID, CustomerID, Date, ShipStatus FROM Orders";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery();
-		ps.close();
-		return rs;
+		return ps.executeQuery();
 	}
 	
 	public ResultSet getAllOrdersDescendingTotal() throws SQLException {
@@ -60,9 +58,7 @@ public class JDBC implements Closeable {
 				+ "GROUP BY OrderDetails.OrderID "
 				+ "ORDER BY Total DESC";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery();
-		ps.close();
-		return rs;
+		return ps.executeQuery();
 	}
 	
 	public ResultSet getAllOrdersWithTotalGreaterThan(double total) throws SQLException {
@@ -73,34 +69,26 @@ public class JDBC implements Closeable {
 				+ "WHERE Total > ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setDouble(1, total);
-		ResultSet rs = ps.executeQuery();
-		ps.close();
-		return rs;
+		return ps.executeQuery();
 	}
 	
 	public ResultSet getOrder(int orderid) throws SQLException {
 		String sql = "SELECT * FROM Orders WHERE CustomerID = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, orderid);
-		ResultSet rs = ps.executeQuery();
-		ps.close();
-		return rs;
+		return ps.executeQuery();
 	}
 	
 	public ResultSet getOpenOrders() throws SQLException {
 		String sql = "SELECT * FROM Orders WHERE ShipStatus = FALSE";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery();
-		ps.close();
-		return rs;
+		return ps.executeQuery();
 	}
 	
 	public ResultSet getClosedOrders() throws SQLException {
 		String sql = "SELECT * FROM Orders WHERE ShipStatus = TRUE";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery();
-		ps.close();
-		return rs;
+		return ps.executeQuery();
 	}
 	
 	public ResultSet getProductsFromOrder(int orderid) throws SQLException {
@@ -109,9 +97,7 @@ public class JDBC implements Closeable {
 				"WHERE od.OrderID = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, orderid);
-		ResultSet rs = ps.executeQuery();
-		ps.close();
-		return rs;
+		return ps.executeQuery();
 	}
 	
 	// ---------- PRODUCT QUERIES ----------
@@ -119,18 +105,14 @@ public class JDBC implements Closeable {
 	public ResultSet getAllProducts() throws SQLException {
 		String sql = "SELECT * FROM Products";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery();
-		ps.close();
-		return rs;
+		return ps.executeQuery();
 	}
 	
 	public ResultSet getProductsFromCategory(int categoryid) throws SQLException {
 		String sql = "SELECT * FROM Products WHERE CategoryID = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, categoryid);
-		ResultSet rs = ps.executeQuery();
-		ps.close();
-		return rs;
+		return ps.executeQuery();
 	}
 	
 	// ---------- CUSTOMER QUERIES ----------
@@ -138,16 +120,12 @@ public class JDBC implements Closeable {
 	public ResultSet getAllCustomers() throws SQLException {
 		String sql = "SELECT * FROM CUSTOMER";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery();
-		ps.close();
-		return rs;
+		return ps.executeQuery();
 	}
 	
 	public ResultSet getCustomersByZip(String zip) throws SQLException {
 		String sql = "SELECT * FROM Customers WHERE Zip = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
-		ResultSet rs = ps.executeQuery();
-		ps.close();
-		return rs;
+		return ps.executeQuery();
 	}
 }
