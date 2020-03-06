@@ -109,7 +109,7 @@ public class JDBC implements Closeable {
     // ---------- CUSTOMER QUERIES ----------
     
     public ResultSet getAllCustomers() throws SQLException {
-        String sql = "SELECT * FROM CUSTOMER";
+        String sql = "SELECT * FROM CUSTOMERS";
         PreparedStatement ps = con.prepareStatement(sql);
         return ps.executeQuery();
     }

@@ -18,7 +18,8 @@ public class StoreDriver {
 		}
 
 	}
-
+	
+	//_________Welcome page_________
 	private void welcomePage() throws SQLException {
 		System.out.println("**********WELCOME TO JEFFRENIVI**********\n");
 		System.out.println("Select options below\n1. Orders\n2. Customers\n3. Products\n4. Shippers / Suppliers");
@@ -48,7 +49,8 @@ public class StoreDriver {
 		}
 
 	}
-
+	
+	//_________Orders page_________
 	private void orders() throws SQLException {
 		System.out.println("**********ORDERS MENU**********");
 		System.out.println("1. View orders\n2. Cancel orders\n");
@@ -109,17 +111,20 @@ public class StoreDriver {
 	private void viewAll() throws SQLException {
 		ResultSet rs = sql.getAllOrders();
 		displayResults(rs);
+		viewAll();
 
 	}
 
 	private void viewOpenOrders() throws SQLException {
 		ResultSet rs = sql.getOpenOrders();
 		displayResults(rs);
+		viewOpenOrders();
 	}
 
 	private void viewClosedOrders() throws SQLException {
 		ResultSet rs = sql.getClosedOrders();
 		displayResults(rs);
+		viewClosedOrders();
 	}
 
 	private void sortOrders() throws SQLException {
@@ -146,6 +151,7 @@ public class StoreDriver {
 	private void sortByDescendingAmount() throws SQLException {
 		ResultSet rs = sql.getAllOrdersDescendingTotal();
 		displayResults(rs);
+		sortByDescendingAmount();
 	}
 
 	// displays orders that exceed total $$$ inputed from user
@@ -154,6 +160,7 @@ public class StoreDriver {
 		double total = scan.nextDouble();
 		ResultSet rs = sql.getAllOrdersWithTotalGreaterThan(total);
 		displayResults(rs);
+		sortByExceedingTotal();
 
 	}
 
@@ -162,13 +169,16 @@ public class StoreDriver {
 		int orderId = scan.nextInt();
 		ResultSet rs = sql.getOrder(orderId);
 		displayResults(rs);
+		viewSpecificOrder();
 	}
 
 	// waiting on J
 	private void cancelOrders() {
 
 	}
-
+	
+	
+	//_________Cutomers Menu_________
 	//Need to make customers methods
 	private void customers() throws SQLException {
 		System.out.println("**********CUSTOMERS MENU**********");
@@ -195,15 +205,18 @@ public class StoreDriver {
 		System.out.println("**********VIEWING ALL CUSTOEMRS**********");
 		ResultSet rs = sql.getAllCustomers();
 		displayResults(rs);
+		viewAllCustomers();
 	}
 
 	private void viewCustomerByZip() throws SQLException {
-			System.out.println("Type in 5 digit zipcode to find Customer: ");
+			System.out.println("Type in 5 digit zipcode to find Customer(s)");
 			String zip = scan.nextLine();
 			ResultSet rs = sql.getCustomersByZip(zip);
 			displayResults(rs);
+			viewCustomerByZip();
 	}
-
+	
+	//_________Products Menu_________
 	//need to make methods for products
 	private void products() {
 		System.out.println("**********PRODUCTS MENU**********");
@@ -226,6 +239,7 @@ public class StoreDriver {
 
 	}
 	
+	//_________Shippers and Supplies Menu_________
 	//need to create method body for Ships and Supplies
 	private void shippersAndSuppliers() {
 		System.out.println("**********SHIPPERS AND SUPPLIERS MENU**********");
