@@ -282,3 +282,29 @@ SELECT
     a.Zip
 FROM Customers c
 JOIN Addresses a ON c.AddressID = a.AddressID;
+
+CREATE VIEW AllSuppliers AS
+SELECT
+	s.SupplierID,
+    s.Name,
+    s.ContactName,
+    s.Phone,
+    a.Street,
+    a.City,
+    a.State,
+    a.Zip
+FROM Suppliers s
+JOIN Addresses a ON s.AddressID = a.AddressID;
+
+CREATE VIEW AllShippers AS
+SELECT 
+	s.ShipperID,
+    s.Name,
+    s.ContactName,
+    s.Phone,
+    a.Street,
+    a.City,
+    a.State,
+    a.Zip
+FROM Shippers s
+JOIN Addresses a on s.AddressID = a.AddressID;
