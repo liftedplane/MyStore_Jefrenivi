@@ -20,7 +20,7 @@ public class StoreDriver {
 	}
 
 	private void welcomePage() throws SQLException {
-		System.out.println("WELCOME TO JEFFRENIVI!!!");
+		System.out.println("**********WELCOME TO JEFFRENIVI**********\n");
 		System.out.println("Select options below\n1. Orders\n2. Customers\n3. Products\n4. Shippers / Suppliers");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
@@ -50,7 +50,7 @@ public class StoreDriver {
 	}
 
 	private void orders() throws SQLException {
-		System.out.println("ORDERS MENU");
+		System.out.println("**********ORDERS MENU**********");
 		System.out.println("1. View orders\n2. Cancel orders\n");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
@@ -72,7 +72,7 @@ public class StoreDriver {
 	}
 
 	private void viewOrders() throws SQLException {
-		System.out.println("VIEWING ORDERS");
+		System.out.println("**********VIEWING ORDERS**********");
 		System.out.println("1. View All Orders\n2. View Open orders\n3. View Closed orders\n4. Sort orders\n5. View Specific order\n");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
@@ -123,7 +123,7 @@ public class StoreDriver {
 	}
 
 	private void sortOrders() throws SQLException {
-		System.out.println("HOW WOULD YOU LIKE TO SORT THE ORDERS???");
+		System.out.println("**********HOW WOULD YOU LIKE TO SORT THE ORDERS**********");
 		System.out.println("1. Sort by descending total $$$ amount\n2. View Orders exceeding given total\n");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
@@ -158,7 +158,7 @@ public class StoreDriver {
 	}
 
 	private void viewSpecificOrder() throws SQLException {
-		System.out.println("ENTER ORDER ID OF ORDER YOU WANT TO SEE...");
+		System.out.println("**********ENTER ORDER ID OF ORDER YOU WANT TO SEE**********");
 		int orderId = scan.nextInt();
 		ResultSet rs = sql.getOrder(orderId);
 		displayResults(rs);
@@ -171,7 +171,7 @@ public class StoreDriver {
 
 	//Need to make customers methods
 	private void customers() {
-		System.out.println("CUSTOMERS MENU");
+		System.out.println("**********CUSTOMERS MENU**********");
 		System.out.println("1. View All Customers\n2. View Customer(s) by Zipcode");
 		System.out.println("Enter Option Number");
 		String opt = scan.nextLine();
@@ -193,7 +193,7 @@ public class StoreDriver {
 
 	//need to make methods for products
 	private void products() {
-		System.out.println("PRODUCTS MENU");
+		System.out.println("**********PRODUCTS MENU**********");
 		System.out.println("1. View All Products\n2. View All Products from a Category");
 		System.out.println("Enter Option Number");
 		String opt = scan.nextLine();
@@ -215,7 +215,7 @@ public class StoreDriver {
 	
 	//need to create method body for Ships and Supplies
 	private void shippersAndSuppliers() {
-		System.out.println("SHIPPERS AND SUPPLIERS MENU");
+		System.out.println("**********SHIPPERS AND SUPPLIERS MENU**********");
 		System.out.println("1. View Shippers\n2. View Suppliers");
 		System.out.println("Enter Option Number");
 		String opt = scan.nextLine();
