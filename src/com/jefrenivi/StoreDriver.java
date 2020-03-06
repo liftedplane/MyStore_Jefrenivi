@@ -170,7 +170,7 @@ public class StoreDriver {
 	}
 
 	//Need to make customers methods
-	private void customers() {
+	private void customers() throws SQLException {
 		System.out.println("CUSTOMERS MENU");
 		System.out.println("1. View All Customers\n 2. View Customer(s) by Zipcode");
 		System.out.println("Enter Option Number");
@@ -187,12 +187,22 @@ public class StoreDriver {
 				System.err.println("Sorry, that option is not available");
 				customers();
 		}
-			
-
 	}
+	private void viewAllCustomers() throws SQLException {
+			ResultSet rs = sql.getAllCustomers();
+			displayResults(rs);
+	}
+	
+	private void viewCustomerByZip() throws SQLException {
+		System.out.println("Type in 5 digit zipcode to find Customer: ");
+		String zip = scan.nextLine();
+		ResultSet rs = sql.getCustomersByZip(zip);
+		displayResults(rs);
+	}
+	
 
 	//need to make methods for products
-	private void products() {
+	private void products() throws SQLException {
 		System.out.println("PRODUCTS MENU");
 		System.out.println("1. View All Products\n 2. View All Products from a Category");
 		System.out.println("Enter Option Number");
@@ -212,6 +222,18 @@ public class StoreDriver {
 		}
 
 	}
+	private void viewAllProducts() throws SQLException {
+		ResultSet rs = sql.getAllProducts();
+		displayResults(rs);
+}
+	
+	private void viewProductsFromCategory() throws SQLException {
+		System.out.println("Type Category to view Product: ");
+		String Catrgory = scan.nextLine();
+		ResultSet rs = sql.getCustomersByZip(Catrgory);
+		displayResults(rs);
+	}
+	
 	
 	//need to create method body for Ships and Supplies
 	private void shippersAndSuppliers() {
@@ -233,6 +255,10 @@ public class StoreDriver {
 			shippersAndSuppliers();
 		}
 	}
+	
+	private void viewShippers() throws SQLException {
+		ResultSet rs = sql.getAllShippers();
+		displayResults(rs);
 
 	// displays results when called
 	private void displayResults(ResultSet rs) throws SQLException {
