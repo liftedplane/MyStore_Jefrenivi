@@ -32,7 +32,6 @@ public class JDBC implements Closeable {
 		} catch (SQLException e) {
 			System.out.println("Error connecting to " + url);
 			e.printStackTrace();
-			//kjbsfdfkjb
 		}
 	}
 
@@ -48,7 +47,7 @@ public class JDBC implements Closeable {
 	// ---------- ORDER QUERIES ----------
 	
 	public ResultSet getAllOrders() throws SQLException {
-		String sql = "SELECT OrderID, CustomerID, Date, ShipStatus FROM Orders";
+		String sql = "SELECT * FROM Orders";
 		PreparedStatement ps = con.prepareStatement(sql);
 		return ps.executeQuery();
 	}
@@ -81,13 +80,13 @@ public class JDBC implements Closeable {
 	}
 	
 	public ResultSet getOpenOrders() throws SQLException {
-		String sql = "SELECT * FROM Orders WHERE ShipStatus = FALSE";
+		String sql = "SELECT * FROM Orders WHERE OpenStatus = FALSE";
 		PreparedStatement ps = con.prepareStatement(sql);
 		return ps.executeQuery();
 	}
 	
 	public ResultSet getClosedOrders() throws SQLException {
-		String sql = "SELECT * FROM Orders WHERE ShipStatus = TRUE";
+		String sql = "SELECT * FROM Orders WHERE OpenStatus = TRUE";
 		PreparedStatement ps = con.prepareStatement(sql);
 		return ps.executeQuery();
 	}
