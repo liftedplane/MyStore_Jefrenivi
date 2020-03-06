@@ -116,8 +116,15 @@ public class JDBC implements Closeable {
 		return ps.executeQuery();
 	}
 	
+	// Don't ever ask me how this works, because I don't know
 	public ResultSet getProductsFromCategory(int categoryid) throws SQLException {
-		String sql = "SELECT * FROM AllProducts WHERE Category = (SELECT Name FROM Categories where CategoryID = ?)";
+		String sql = 
+				"SELECT p.ProductID, p.Name, c.Name AS Category, CONCAT('$', p.Price) AS Price, "
+				+ "CONCAT(FORMAT(p.Weight, 3),'kg') AS Weight, p.Stock, p.ReorderLevel "
+				+ "FROM Products p JOIN (SELECT  CategoryID, Name, Description, ParentCategoryID "
+				+ "FROM (SELECT * FROM Categories ORDER BY ParentCategoryID, CategoryID) categories_sorted, "
+				+ "(SELECT @pv := '?') init WHERE find_in_set(ParentCategoryID, @pv) "
+				+ "AND length(@pv := concat(@pv, ',', CategoryID))) c ON p.CategoryID = c.CategoryID";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, categoryid);
 		return ps.executeQuery();
