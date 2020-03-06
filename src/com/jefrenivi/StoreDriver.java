@@ -51,7 +51,7 @@ public class StoreDriver {
 
 	private void orders() throws SQLException {
 		System.out.println("ORDERS MENU");
-		System.out.println("1. View orders\n" + "2. Cancel orders\n");
+		System.out.println("1. View orders\n 2. Cancel orders\n");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
 		switch (opt) {
@@ -73,8 +73,7 @@ public class StoreDriver {
 
 	private void viewOrders() throws SQLException {
 		System.out.println("VIEWING ORDERS");
-		System.out.println("1. View All Orders\n" + "2. View Open orders\n" + "3. View Closed orders\n"
-				+ "4. Sort orders\n" + "5. View Specific order\n");
+		System.out.println("1. View All Orders\n 2. View Open orders\n 3. View Closed orders\n 4. Sort orders\n 5. View Specific order\n");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
 		switch (opt) {
@@ -125,7 +124,7 @@ public class StoreDriver {
 
 	private void sortOrders() throws SQLException {
 		System.out.println("HOW WOULD YOU LIKE TO SORT THE ORDERS???");
-		System.out.println("1. Sort by descending total $$$ amount\n" + "2. View Orders exceeding given total\n");
+		System.out.println("1. Sort by descending total $$$ amount\n 2. View Orders exceeding given total\n");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
 		switch (opt) {
