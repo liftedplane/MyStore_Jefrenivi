@@ -240,8 +240,6 @@ JOIN Billables b ON o.BillableID = b.BillableID
 GROUP BY od.OrderID
 ORDER BY SUM(od.Price * od.Quantity * (1 - od.Discount)) DESC;
 
-SELECT * FROM Products p JOIN OrderDetails od ON p.ProductID = od.ProductID WHERE od.OrderID = 1;
-
 CREATE VIEW ProductsInOrder AS
 SELECT 
 	od.OrderID,
