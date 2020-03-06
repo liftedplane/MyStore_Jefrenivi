@@ -170,18 +170,18 @@ public class StoreDriver {
 	}
 
 	//Need to make customers methods
-	private void customers() {
+	private void customers() throws SQLException {
 		System.out.println("**********CUSTOMERS MENU**********");
 		System.out.println("1. View All Customers\n2. View Customer(s) by Zipcode");
 		System.out.println("Enter Option Number");
 		String opt = scan.nextLine();
 		switch (opt) {
 			case "1":
-//				viewAllCustomers();
+				viewAllCustomers();
 				break;
 			
 			case "2":
-//				viewCustomerByZip();
+				viewCustomerByZip();
 				break;
 			default: 
 				System.err.println("Sorry, that option is not available");
@@ -189,6 +189,19 @@ public class StoreDriver {
 		}
 			
 
+	}
+	
+	private void viewAllCustomers() throws SQLException {
+		System.out.println("**********VIEWING ALL CUSTOEMRS**********");
+		ResultSet rs = sql.getAllCustomers();
+		displayResults(rs);
+	}
+
+	private void viewCustomerByZip() throws SQLException {
+			System.out.println("Type in 5 digit zipcode to find Customer: ");
+			String zip = scan.nextLine();
+			ResultSet rs = sql.getCustomersByZip(zip);
+			displayResults(rs);
 	}
 
 	//need to make methods for products
