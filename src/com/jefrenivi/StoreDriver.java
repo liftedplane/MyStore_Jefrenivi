@@ -256,9 +256,11 @@ public class StoreDriver {
 		}
 	}
 	
-	private void viewShippers() throws SQLException {
-		ResultSet rs = sql.getAllShippers();
-		displayResults(rs);
+//	private void viewShippers() throws SQLException {
+//		ResultSet rs = sql.getAllShippers();
+//		displayResults(rs);
+//		
+	
 
 	// displays results when called
 	private void displayResults(ResultSet rs) throws SQLException {
