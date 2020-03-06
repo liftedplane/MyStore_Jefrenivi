@@ -274,6 +274,7 @@ public class StoreDriver {
 		while (rs.next()) {
 			for (int i = 1; i <= rsmd.getColumnCount(); i++)
 				System.out.println(rs.getObject(i));
+			//rando
 
 		}
 	}
