@@ -18,6 +18,8 @@ public class JDBC implements Closeable {
 		establishConnection();
 	}
 	
+	//Random change
+	
 	public void establishConnection() {
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
