@@ -111,20 +111,20 @@ public class StoreDriver {
 	private void viewAll() throws SQLException {
 		ResultSet rs = sql.getAllOrders();
 		displayResults(rs);
-		viewAll();
+		viewOrders();
 
 	}
 
 	private void viewOpenOrders() throws SQLException {
 		ResultSet rs = sql.getOpenOrders();
 		displayResults(rs);
-		viewOpenOrders();
+		viewOrders();
 	}
 
 	private void viewClosedOrders() throws SQLException {
 		ResultSet rs = sql.getClosedOrders();
 		displayResults(rs);
-		viewClosedOrders();
+		viewOrders();
 	}
 
 	private void sortOrders() throws SQLException {
@@ -151,7 +151,7 @@ public class StoreDriver {
 	private void sortByDescendingAmount() throws SQLException {
 		ResultSet rs = sql.getAllOrdersDescendingTotal();
 		displayResults(rs);
-		sortByDescendingAmount();
+		viewOrders();
 	}
 
 	// displays orders that exceed total $$$ inputed from user
@@ -205,7 +205,7 @@ public class StoreDriver {
 		System.out.println("********** VIEWING ALL CUSTOEMRS **********");
 		ResultSet rs = sql.getAllCustomers();
 		displayResults(rs);
-		viewAllCustomers();
+		customers();
 	}
 
 	private void viewCustomerByZip() throws SQLException {
@@ -243,6 +243,7 @@ public class StoreDriver {
 		System.out.println("********* VIEWING ALL PRODUCTS **********");
 		ResultSet rs = sql.getAllProducts();
 		displayResults(rs);
+		products();
 	}
 	
 	private void viewProductsFromCategory() throws SQLException {
@@ -250,6 +251,7 @@ public class StoreDriver {
 		String Catrgory = scan.nextLine();
 		ResultSet rs = sql.getCustomersByZip(Catrgory);
 		displayResults(rs);
+		viewProductsFromCategory();
 		}
 	
 	//_________Shippers and Supplies Menu_________
