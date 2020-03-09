@@ -235,7 +235,7 @@ public class StoreDriver {
 	//_________Cutomers Menu_________
 	private void customers() throws SQLException {
 		System.out.println("\t********** CUSTOMERS MENU **********");
-		System.out.println("1. View All Customers\n2. View Customer(s) by Zipcode\n3. View Customer(s) Lifetime Total\n4.Go Back\n");
+		System.out.println("1. View All Customers\n2. View Customer(s) by Zipcode\n3. View Customer(s) Lifetime Total\n4. Go Back\n");
 		System.out.println("\t<<<<<<<<<< Enter Option Number >>>>>>>>>>");
 		String opt = scan.nextLine();
 		switch (opt) {
