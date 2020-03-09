@@ -193,26 +193,27 @@ INSERT INTO OrderDetails (OrderID, ProductID, Price, Quantity, Discount) VALUES
 -- CREATING VIEWS
 CREATE VIEW AllOrders AS
 SELECT 
-	o.OrderID, 
+	LPAD(o.OrderID, 8, '0') AS 'Order ID', 
 	c.Name AS Customer, 
 	s.Name AS Shipper, 
 	b.Name As Payment, 
-	o.Date AS OrderDate, 
-	o.ShipDate, 
-	IF(o.OpenStatus=1, 'True', 'False') AS OpenStatus
+	o.Date AS 'Order Date', 
+	IFNULL(o.ShipDate, 'Not yet shipped') AS 'Ship Date', 
+	IF(o.OpenStatus=1, 'Open', 'Closed') AS Status
 FROM Orders o 
 JOIN Customers c ON o.CustomerID = c.CustomerID
 JOIN Shippers s ON o.ShipperID = s.ShipperID 
-JOIN Billables b ON o.BillableID = b.BillableID;
+JOIN Billables b ON o.BillableID = b.BillableID
+ORDER BY o.OrderID;
 
 CREATE VIEW OrdersDescendingTotal AS
 SELECT 
-	o.OrderId, 
+	LPAD(o.OrderId, 8, '0') AS 'Order ID', 
 	c.Name AS Customer, 
     s.Name AS Shipper, 
     b.Name AS Payment, 
-    o.Date AS OrderDate, 
-    o.ShipDate, 
+    o.Date AS 'Order Date', 
+    IFNULL(o.ShipDate, 'Not yet shipped') AS 'Ship Date', 
     CONCAT('$', FORMAT(SUM(od.Price * od.Quantity * (1 - od.Discount)), 2)) AS Total
 FROM Orders o 
 JOIN OrderDetails od ON o.OrderID = od.OrderID
@@ -225,12 +226,12 @@ ORDER BY SUM(od.Price * od.Quantity * (1 - od.Discount)) DESC;
 -- Following view does not include currency formatting
 CREATE VIEW OrdersMinTotal AS
 SELECT 
-	o.OrderId, 
+	LPAD(o.OrderId, 8, '0') as 'Order ID', 
     c.Name AS Customer, 
     s.Name AS Shipper, 
     b.Name AS Payment, 
-    o.Date AS OrderDate, 
-    o.ShipDate, 
+    o.Date AS 'Order Date', 
+    IFNULL(o.ShipDate, 'Not yet shipped') AS 'Ship Date', 
     SUM(od.Price * od.Quantity * (1 - od.Discount)) AS Total
 FROM Orders o 
 JOIN OrderDetails od ON o.OrderID = od.OrderID
@@ -242,8 +243,8 @@ ORDER BY SUM(od.Price * od.Quantity * (1 - od.Discount)) DESC;
 
 CREATE VIEW ProductsInOrder AS
 SELECT 
-	od.OrderID,
-	p.ProductId, 
+	LPAD(od.OrderID, 8, '0') AS 'Order ID',
+	p.ProductId AS 'Product ID', 
     p.Name AS Product,
     c.Name AS Category,  
     CONCAT('$', FORMAT(od.Price, 2)) AS Price, 
@@ -256,21 +257,21 @@ JOIN Categories c ON p.CategoryID = c.CategoryID;
 
 CREATE VIEW AllProducts AS
 SELECT 
-	p.ProductID, 
+	p.ProductID AS 'Product ID', 
     p.Name, 
     c.name AS Category,
     s.name AS Supplier,
     CONCAT('$', p.Price) AS Price,
     CONCAT(FORMAT(p.Weight, 3),'kg') AS Weight,
     p.Stock,
-    p.ReorderLevel
+    p.ReorderLevel AS 'Reorder Level'
 FROM Products p
 JOIN Categories c ON p.CategoryID = c.CategoryID
 JOIN Suppliers s on p.SupplierID = s.SupplierID;
 
 CREATE VIEW AllCustomers AS
 SELECT
-	c.CustomerID,
+	LPAD(c.CustomerID, 8, '0') AS 'Cutomer ID',
     c.Name,
     c.Email,
     c.Phone,
@@ -280,12 +281,12 @@ SELECT
     a.Zip
 FROM Customers c
 JOIN Addresses a ON c.AddressID = a.AddressID;
-
+                       
 CREATE VIEW AllSuppliers AS
 SELECT
-	s.SupplierID,
+	LPAD(s.SupplierID, 8, '0') AS 'Supplier ID',
     s.Name,
-    s.ContactName,
+    s.ContactName AS 'Contact Name',
     s.Phone,
     a.Street,
     a.City,
@@ -296,9 +297,9 @@ JOIN Addresses a ON s.AddressID = a.AddressID;
 
 CREATE VIEW AllShippers AS
 SELECT 
-	s.ShipperID,
+	LPAD(s.ShipperID, 8, '0') AS 'Shipper ID',
     s.Name,
-    s.ContactName,
+    s.ContactName AS 'Contact Name',
     s.Phone,
     a.Street,
     a.City,
@@ -306,3 +307,30 @@ SELECT
     a.Zip
 FROM Shippers s
 JOIN Addresses a on s.AddressID = a.AddressID;
+
+CREATE VIEW AllCustomersWithPurchaseTotals AS
+SELECT
+	LPAD(c.CustomerID, 8, '0') AS 'Customer ID',
+    c.Name,
+    c.Email,
+    c.Phone,
+    a.Street,
+    a.City,
+    a.State,
+    a.Zip,
+    SUM(od.Price * od.Quantity * (1 - od.Discount)) AS 'Total Purchases'
+FROM Customers c
+JOIN Addresses a ON c.AddressID = a.AddressID
+JOIN Orders o ON o.CustomerID = c.CustomerID
+JOIN OrderDetails od ON od.OrderID = o.OrderID
+GROUP BY c.CustomerID;
+                                  
+CREATE VIEW AllCategories AS
+SELECT
+	c.CategoryID AS 'Category ID',
+    c.Name,
+    p.Name AS 'Parent Category',
+    c.Description
+FROM Categories c
+JOIN Categories p ON p.CategoryID = c.ParentCategoryID;
+select * from AllCustomersWithPurchaseTotals where `Total Purchases` > 50;
