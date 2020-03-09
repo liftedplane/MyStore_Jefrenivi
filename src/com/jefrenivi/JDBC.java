@@ -143,6 +143,14 @@ public class JDBC implements Closeable {
 		return ps.executeQuery();
 	}
 	
+	// ---------- CATEGORY QUERIES ----------
+	
+	public ResultSet getAllCategories() throws SQLException {
+		String sql = "SELECT * FROM AllCategories";
+		PreparedStatement ps = con.prepareStatement(sql);
+		return ps.executeQuery();
+	}
+	
 	// ---------- SUPPLIER QUERIES ----------
 	
 	public ResultSet getAllSuppliers() throws SQLException {
