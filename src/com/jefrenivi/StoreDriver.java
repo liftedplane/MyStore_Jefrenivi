@@ -270,19 +270,18 @@ public class StoreDriver {
 		}
 	
 	//_________Shippers and Supplies Menu_________
-	//need to create method body for Ships and Supplies
-	private void shippersAndSuppliers() {
+	private void shippersAndSuppliers() throws SQLException {
 		System.out.println("********** SHIPPERS AND SUPPLIERS MENU **********");
 		System.out.println("1. View Shippers\n2. View Suppliers");
 		System.out.println("Enter Option Number");
 		String opt = scan.nextLine();
 		switch (opt) {
 		case "1":
-//			viewShippers();
+			viewShippers();
 			break;
-			
+	
 		case "2":
-//			viewSuppliers();
+			viewSuppliers();
 			break;
 			
 		default:
@@ -290,8 +289,20 @@ public class StoreDriver {
 			shippersAndSuppliers();
 		}
 	}
-
-	// displays results when called
+	
+	private void viewShippers() throws SQLException {
+		System.out.println("*******Viewing All Shippers*******");
+		ResultSet rs = sql.getAllShippers();
+		displayResults(rs);
+	}
+	
+	private void viewSuppliers() throws SQLException {
+		System.out.println("*******Viewing All Suppliers*******");
+		ResultSet rs = sql.getAllSuppliers();
+		displayResults(rs);
+	}
+	
+	
 	private void displayResults(ResultSet rs) throws SQLException {
 
 		ResultSetMetaData rsmd = rs.getMetaData();
