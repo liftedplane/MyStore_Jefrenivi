@@ -12,7 +12,6 @@ public class StoreDriver {
 	private static JDBC sql;
 
 	public static void main(String[] args) {
-		
 		sql = new JDBC();
 		try {
 			new StoreDriver().welcomePage();
@@ -24,9 +23,8 @@ public class StoreDriver {
 	
 	//_________Welcome page_________
 	private void welcomePage() throws SQLException {
-		System.out.println("**********WELCOME TO JEFRENIVI**********\n");
-		System.out.println("Select options below\n1. Orders\n2. Customers\n3. Products\n4. Shippers / Suppliers");
-
+		System.out.println("********** WELCOME TO JEFFRENIVI **********\n");
+		System.out.println("Select options below\n1. Orders\n2. Customers\n3. Products\n4. Shippers / Suppliers\n");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
 
@@ -57,7 +55,7 @@ public class StoreDriver {
 	//_________Orders page_________
 	private void orders() throws SQLException {
 		System.out.println("********** ORDERS MENU **********");
-		System.out.println("1. View orders\n2. Cancel orders\n");
+		System.out.println("1. View Orders\n2. Cancel Orders\n3. Go Back\n");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
 		switch (opt) {
@@ -66,7 +64,11 @@ public class StoreDriver {
 			break;
 
 		case "2":
-			cancelOrders(); 
+			cancelOrders(); // still need to make body for method. waiting on jeff
+			break;
+		
+		case "3":
+			welcomePage();
 			break;
 
 		default:
@@ -79,7 +81,7 @@ public class StoreDriver {
 
 	private void viewOrders() throws SQLException {
 		System.out.println("********** VIEWING ORDERS **********");
-		System.out.println("1. View All Orders\n2. View Open orders\n3. View Closed orders\n4. Sort orders\n5. View Specific order\n");
+		System.out.println("1. View All Orders\n2. View Open Orders\n3. View Closed Orders\n4. Sort Orders\n5. View Specific Order\n6. Go Back\n7. Main Menu\n");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
 		switch (opt) {
@@ -101,6 +103,14 @@ public class StoreDriver {
 
 		case "5":
 			viewSpecificOrder();
+			break;
+			
+		case "6":
+			orders();
+			break;
+			
+		case "7":
+			welcomePage();
 			break;
 
 		default:
@@ -133,8 +143,8 @@ public class StoreDriver {
 
 	private void sortOrders() throws SQLException {
 		System.out.println("********** HOW WOULD YOU LIKE TO SORT THE ORDERS **********");
-		System.out.println("1. Sort by descending total $$$ amount\n2. View Orders exceeding given total\n");
-		System.out.println("Enter option number");
+		System.out.println("1. Sort By Descending Total $$$ Amount\n2. View Orders Exceeding Given Total\n3. Go Back\n4. Main Menu\n");
+		System.out.println("Enter Option Number");
 		String opt = scan.nextLine();
 		switch (opt) {
 		case "1":
@@ -143,6 +153,13 @@ public class StoreDriver {
 
 		case "2":
 			sortByExceedingTotal();
+			
+		case "3":
+			viewOrders();
+			break;
+			
+		case "4":
+			welcomePage();
 			break;
 
 		default:
@@ -160,44 +177,63 @@ public class StoreDriver {
 
 	// displays orders that exceed total $$$ inputed from user
 	private void sortByExceedingTotal() throws SQLException {
+		try {
 		System.out.println("Enter $$$ Amount");
-		double total = scan.nextDouble();
-		ResultSet rs = sql.getAllOrdersWithTotalGreaterThan(total);
-		displayResults(rs);
-		sortByExceedingTotal();
+		String input = scan.nextLine();
+			double total = Double.parseDouble(input);
+			ResultSet rs = sql.getAllOrdersWithTotalGreaterThan(total);
+			displayResults(rs);
+			sortOrders();
+			
+		} catch (NumberFormatException e) {
+			System.out.println("Sorry, that wasn't a number. Try Again!");
+			sortByExceedingTotal();
+		}
 
 	}
 
 	private void viewSpecificOrder() throws SQLException {
-		System.out.println("********** ENTER ORDER ID OF ORDER YOU WANT TO SEE **********");
-		int orderId = scan.nextInt();
-		ResultSet rs = sql.getOrder(orderId);
-		displayResults(rs);
-		viewSpecificOrder();
+		try{
+			System.out.println("********** ENTER ORDER ID OF ORDER YOU WANT TO SEE **********");
+			int orderId = scan.nextInt();
+			ResultSet rs = sql.getOrder(orderId);
+			displayResults(rs);
+			rs = sql.getProductsFromOrder(orderId);
+			displayResults(rs);
+			orders();	
+			
+		} catch (NumberFormatException e) {
+			System.out.println("Sorry, that wasn't a number. Please Try Again");
+			viewSpecificOrder();
+			
+		}
 	}
 
-	
+	// waiting on J
 	private void cancelOrders() throws SQLException {
-		System.out.println("Please ENTER ORDER ID To Cancel: ");
+		System.out.println("Please Enter Order ID You Want To Cancel");
 		int orderId = scan.nextInt();
 		sql.deleteOrder(orderId); 
 		
 		if (orderId >=1) {
 			
-			System.out.println("*****Your order had been successful canceled*****");
+			System.out.println("***** Your order " + orderId + " was cancelled Successfully *****");
+			orders();
 			
 		}else {
-			System.out.println("Record Not Found...");
+			System.out.println("Record Not Found, Please Try Again...");
+			orders();
 		}
 		
 	}
+
 	
 	
 	//_________Cutomers Menu_________
 	//Need to make customers methods
 	private void customers() throws SQLException {
 		System.out.println("********** CUSTOMERS MENU **********");
-		System.out.println("1. View All Customers\n2. View Customer(s) by Zipcode");
+		System.out.println("1. View All Customers\n2. View Customer(s) by Zipcode\n3. Go Back\n");
 		System.out.println("Enter Option Number");
 		String opt = scan.nextLine();
 		switch (opt) {
@@ -208,16 +244,20 @@ public class StoreDriver {
 			case "2":
 				viewCustomerByZip();
 				break;
+				
+			case "3":
+				welcomePage();
+				break;
+				
 			default: 
 				System.err.println("Sorry, that option is not available");
 				customers();
 		}
-			
 
 	}
 	
 	private void viewAllCustomers() throws SQLException {
-		System.out.println("********** VIEWING ALL CUSTOEMRS **********");
+		System.out.println("********** VIEWING ALL CUSTOMERS **********");
 		ResultSet rs = sql.getAllCustomers();
 		displayResults(rs);
 		customers();
@@ -235,7 +275,7 @@ public class StoreDriver {
 	//need to make methods for products
 	private void products() throws SQLException {
 		System.out.println("********** PRODUCTS MENU **********");
-		System.out.println("1. View All Products\n2. View All Products from a Category");
+		System.out.println("1. View All Products\n2. View All Products from a Category\n3. Go Back\n");
 		System.out.println("Enter Option Number");
 		String opt = scan.nextLine();
 		switch (opt) {
@@ -245,6 +285,10 @@ public class StoreDriver {
 			
 		case"2":
 			viewProductsFromCategory();
+			break;
+			
+		case "3":
+			welcomePage();
 			break;
 		
 		default:
@@ -261,19 +305,24 @@ public class StoreDriver {
 		products();
 	}
 	
+	//Need to make a view all cat. statement in JDBC to be used in this method. Will help user select what category to view.
 	private void viewProductsFromCategory() throws SQLException {
-		System.out.println("Type Category to view Product");
-		String Catrgory = scan.nextLine();
-		ResultSet rs = sql.getCustomersByZip(Catrgory);
+		ResultSet rs = sql.getAllCategories();
 		displayResults(rs);
-		viewProductsFromCategory();
+		System.out.println("Type Category Number to view Products");
+		String input = scan.nextLine();
+		int category = Integer.parseInt(input);
+		rs = sql.getProductsFromCategory(category);
+		displayResults(rs);
+		products();
+		
 		}
 	
 	//_________Shippers and Supplies Menu_________
 	//need to create method body for Ships and Supplies
-	private void shippersAndSuppliers() {
+	private void shippersAndSuppliers() throws SQLException {
 		System.out.println("********** SHIPPERS AND SUPPLIERS MENU **********");
-		System.out.println("1. View Shippers\n2. View Suppliers");
+		System.out.println("1. View Shippers\n2. View Suppliers\n3. Go Back");
 		System.out.println("Enter Option Number");
 		String opt = scan.nextLine();
 		switch (opt) {
@@ -283,6 +332,10 @@ public class StoreDriver {
 			
 		case "2":
 //			viewSuppliers();
+			break;
+			
+		case "3":
+			welcomePage();
 			break;
 			
 		default:
@@ -349,4 +402,3 @@ public class StoreDriver {
 		System.out.println(horizontalLine);
 	}
 }
-
