@@ -121,7 +121,7 @@ public class JDBC implements Closeable {
 				+ "CONCAT(FORMAT(p.Weight, 3),'kg') AS Weight, p.Stock, p.ReorderLevel AS 'Reorder Level'"
 				+ "FROM Products p JOIN (SELECT CategoryID, Name, Description, ParentCategoryID "
 				+ "FROM (SELECT * FROM Categories ORDER BY ParentCategoryID, CategoryID) categories_sorted, "
-				+ "(SELECT @pv := '?') init WHERE find_in_set(ParentCategoryID, @pv) "
+				+ "(SELECT @pv := ?) init WHERE find_in_set(ParentCategoryID, @pv) "
 				+ "AND length(@pv := concat(@pv, ',', CategoryID))) c ON p.CategoryID = c.CategoryID";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, categoryid);
