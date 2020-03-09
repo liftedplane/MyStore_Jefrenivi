@@ -22,7 +22,7 @@ public class StoreDriver {
 	//_________Welcome page_________
 	private void welcomePage() throws SQLException {
 		System.out.println("********** WELCOME TO JEFFRENIVI **********\n");
-		System.out.println("Select options below\n1. Orders\n2. Customers\n3. Products\n4. Shippers / Suppliers");
+		System.out.println("Select options below\n1. Orders\n2. Customers\n3. Products\n4. Shippers / Suppliers\n");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
 
