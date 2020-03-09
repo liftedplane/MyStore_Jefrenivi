@@ -433,7 +433,6 @@ public class StoreDriver {
 			horizontalLine += "+";
 		}
 
-
 		System.out.println(horizontalLine);
 		System.out.print("|");
 		for (int i = 0; i < columnCount; i++) {
@@ -450,5 +449,4 @@ public class StoreDriver {
 		});
 		System.out.println(horizontalLine);
 	}
-
 }
