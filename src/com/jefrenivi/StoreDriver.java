@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-//testing
+
 public class StoreDriver {
 	Scanner scan = new Scanner(System.in);
 	private static JDBC sql;
@@ -66,7 +66,7 @@ public class StoreDriver {
 			break;
 
 		case "2":
-			cancelOrders(); // still need to make body for method. waiting on jeff
+			cancelOrders(); 
 			break;
 
 		default:
@@ -176,9 +176,20 @@ public class StoreDriver {
 		viewSpecificOrder();
 	}
 
-	// waiting on J
-	private void cancelOrders() {
-
+	
+	private void cancelOrders() throws SQLException {
+		System.out.println("Please ENTER ORDER ID To Cancel: ");
+		int orderId = scan.nextInt();
+		sql.deleteOrder(orderId); 
+		
+		if (orderId >=1) {
+			
+			System.out.println("*****Your order had been successful canceled*****");
+			
+		}else {
+			System.out.println("Record Not Found...");
+		}
+		
 	}
 	
 	
@@ -337,5 +348,5 @@ public class StoreDriver {
 		});
 		System.out.println(horizontalLine);
 	}
-
 }
+
