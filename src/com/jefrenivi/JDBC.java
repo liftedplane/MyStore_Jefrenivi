@@ -161,11 +161,12 @@ public class JDBC implements Closeable {
 	
 	// ---------- INSERT STATEMENTS ----------
 	
-	public void newCategory(String name, String description, Integer parentCategory) throws SQLException {
+	public boolean newCategory(String name, String description, Integer parentCategory) throws SQLException {
 		String sql = "INSERT INTO Categories VALUES (?, ?, ?)";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setString(1, name);
 		ps.setString(2, description);
 		ps.setInt(3, parentCategory);
+		return ps.execute();
 	}
 }
