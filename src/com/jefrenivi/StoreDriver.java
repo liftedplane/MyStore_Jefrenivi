@@ -3,6 +3,8 @@ package com.jefrenivi;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class StoreDriver {
@@ -10,6 +12,7 @@ public class StoreDriver {
 	private static JDBC sql;
 
 	public static void main(String[] args) {
+		
 		sql = new JDBC();
 		try {
 			new StoreDriver().welcomePage();
@@ -20,7 +23,7 @@ public class StoreDriver {
 	}
 
 	private void welcomePage() throws SQLException {
-		System.out.println("**********WELCOME TO JEFFRENIVI**********\n");
+		System.out.println("**********WELCOME TO JEFRENIVI**********\n");
 		System.out.println("Select options below\n1. Orders\n2. Customers\n3. Products\n4. Shippers / Suppliers");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
@@ -251,13 +254,56 @@ public class StoreDriver {
 	private void displayResults(ResultSet rs) throws SQLException {
 
 		ResultSetMetaData rsmd = rs.getMetaData();
-
+		int columnCount = rsmd.getColumnCount();
+		int[] columnWidths = new int[columnCount];
+		List<Object[]> rowList = new ArrayList<>();
+		
 		while (rs.next()) {
-			for (int i = 1; i <= rsmd.getColumnCount(); i++)
-				System.out.printf("%s:\t%s\n", rsmd.getColumnName(i), rs.getObject(i));
-				System.out.println();
-
+			Object[] row = new Object[columnCount];
+			for (int i = 1; i <= columnCount; i++) {
+				row[i - 1] = rs.getObject(i);
+			}
+			rowList.add(row);
 		}
+		
+		for (int i = 1; i <= columnCount; i++) {
+			if (rsmd.getColumnName(i).length() > columnWidths[i - 1]) {
+				columnWidths[i - 1] = rsmd.getColumnName(i).length();
+			}
+		}
+		
+		rowList.forEach(r -> {
+			for (int j = 0; j < columnCount; j++) {
+				String value;
+				if (r[j] != null) value = r[j].toString();
+				else value = "null";
+				if (value.length() > columnWidths[j]) {
+					columnWidths[j] = value.length();
+				}
+			}
+		});
+		
+		String horizontalLine = "+";
+		for (int i = 0; i < columnWidths.length; i++) {
+			for (int j = 0; j < columnWidths[i] + 2; j++) horizontalLine += "-";
+			horizontalLine += "+";
+		}
+
+		System.out.println(horizontalLine);
+		System.out.print("|");
+		for (int i = 0; i < columnCount; i++) {
+			System.out.printf(" %-" + columnWidths[i] + "s |", rsmd.getColumnName(i + 1));
+		}
+		System.out.println();
+		System.out.println(horizontalLine);
+		rowList.forEach(r -> {
+			System.out.print("|");
+			for (int j = 0; j < columnCount; j++) {
+				System.out.printf(" %-" + columnWidths[j] + "s |", r[j]);
+			}
+			System.out.println();
+		});
+		System.out.println(horizontalLine);
 	}
 
 }

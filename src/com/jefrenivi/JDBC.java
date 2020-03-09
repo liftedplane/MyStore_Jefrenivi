@@ -61,7 +61,7 @@ public class JDBC implements Closeable {
 	
 	public ResultSet getAllOrdersWithTotalGreaterThan(double total) throws SQLException {
 		String sql = 
-				"SELECT OrderID, Customer, Name, Payment, OrderDate, ShipDate, CONCAT('$', FORMAT(Total, 2)) AS Total "
+				"SELECT `Order ID`, Customer, Shipper, Payment, `Order Date`, `Ship Date`, CONCAT('$', FORMAT(Total, 2)) AS Total "
 				+ "FROM OrdersMinTotal WHERE Total > ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setDouble(1, total);
@@ -69,26 +69,26 @@ public class JDBC implements Closeable {
 	}
 	
 	public ResultSet getOrder(int orderid) throws SQLException {
-		String sql = "SELECT * FROM AllOrders WHERE OrderID = ?";
+		String sql = "SELECT * FROM AllOrders WHERE `Order ID` = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, orderid);
 		return ps.executeQuery();
 	}
 	
 	public ResultSet getOpenOrders() throws SQLException {
-		String sql = "SELECT * FROM AllOrders WHERE OpenStatus = 'True'";
+		String sql = "SELECT * FROM AllOrders WHERE Status = 'Open'";
 		PreparedStatement ps = con.prepareStatement(sql);
 		return ps.executeQuery();
 	}
 	
 	public ResultSet getClosedOrders() throws SQLException {
-		String sql = "SELECT * FROM AllOrders WHERE OpenStatus = 'False'";
+		String sql = "SELECT * FROM AllOrders WHERE Status = 'Closed'";
 		PreparedStatement ps = con.prepareStatement(sql);
 		return ps.executeQuery();
 	}
 	
 	public ResultSet getProductsFromOrder(int orderid) throws SQLException {
-		String sql = "SELECT * FROM ProductsInOrder WHERE OrderID = ?";
+		String sql = "SELECT * FROM ProductsInOrder WHERE `Order ID` = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, orderid);
 		return ps.executeQuery();
@@ -117,9 +117,9 @@ public class JDBC implements Closeable {
 	// Don't ever ask me how this works, because I don't know
 	public ResultSet getProductsFromCategory(int categoryid) throws SQLException {
 		String sql = 
-				"SELECT p.ProductID, p.Name, c.Name AS Category, CONCAT('$', p.Price) AS Price, "
-				+ "CONCAT(FORMAT(p.Weight, 3),'kg') AS Weight, p.Stock, p.ReorderLevel "
-				+ "FROM Products p JOIN (SELECT  CategoryID, Name, Description, ParentCategoryID "
+				"SELECT p.ProductID AS 'Product ID', p.Name, c.Name AS Category, CONCAT('$', p.Price) AS Price, "
+				+ "CONCAT(FORMAT(p.Weight, 3),'kg') AS Weight, p.Stock, p.ReorderLevel AS 'Reorder Level'"
+				+ "FROM Products p JOIN (SELECT CategoryID, Name, Description, ParentCategoryID "
 				+ "FROM (SELECT * FROM Categories ORDER BY ParentCategoryID, CategoryID) categories_sorted, "
 				+ "(SELECT @pv := '?') init WHERE find_in_set(ParentCategoryID, @pv) "
 				+ "AND length(@pv := concat(@pv, ',', CategoryID))) c ON p.CategoryID = c.CategoryID";
@@ -139,6 +139,17 @@ public class JDBC implements Closeable {
 	public ResultSet getCustomersByZip(String zip) throws SQLException {
 		String sql = "SELECT * FROM AllCustomers WHERE Zip = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, zip);
 		return ps.executeQuery();
+	}
+	
+	// ---------- INSERT STATEMENTS ----------
+	
+	public void newCategory(String name, String description, Integer parentCategory) throws SQLException {
+		String sql = "INSERT INTO Categories VALUES (?, ?, ?)";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, name);
+		ps.setString(2, description);
+		ps.setInt(3, parentCategory);
 	}
 }
