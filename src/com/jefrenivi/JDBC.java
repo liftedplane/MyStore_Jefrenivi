@@ -143,6 +143,13 @@ public class JDBC implements Closeable {
 		return ps.executeQuery();
 	}
 	
+	public ResultSet getCustomersByLifetimeTotals(double total) throws SQLException {
+		String sql = "SELECT * FROM AllCustomersWithPurchaseTotals WHERE 'Total Purchases' > ?";
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setDouble(1, total);
+		return ps.executeQuery();
+	}
+	
 	// ---------- CATEGORY QUERIES ----------
 	
 	public ResultSet getAllCategories() throws SQLException {
