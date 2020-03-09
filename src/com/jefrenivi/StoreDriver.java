@@ -3,6 +3,8 @@ package com.jefrenivi;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class StoreDriver {
@@ -10,6 +12,7 @@ public class StoreDriver {
 	private static JDBC sql;
 
 	public static void main(String[] args) {
+		
 		sql = new JDBC();
 		try {
 			new StoreDriver().welcomePage();
@@ -18,10 +21,12 @@ public class StoreDriver {
 		}
 
 	}
-
+	
+	//_________Welcome page_________
 	private void welcomePage() throws SQLException {
-		System.out.println("WELCOME TO JEFFRENIVI!!!");
-		System.out.println("Select options below\n 1. Orders\n 2. Customers\n 3. Products\n 4. Shippers / Suppliers");
+		System.out.println("**********WELCOME TO JEFRENIVI**********\n");
+		System.out.println("Select options below\n1. Orders\n2. Customers\n3. Products\n4. Shippers / Suppliers");
+
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
 
@@ -48,10 +53,11 @@ public class StoreDriver {
 		}
 
 	}
-
+	
+	//_________Orders page_________
 	private void orders() throws SQLException {
-		System.out.println("ORDERS MENU");
-		System.out.println("1. View orders\n 2. Cancel orders\n");
+		System.out.println("********** ORDERS MENU **********");
+		System.out.println("1. View orders\n2. Cancel orders\n");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
 		switch (opt) {
@@ -60,7 +66,7 @@ public class StoreDriver {
 			break;
 
 		case "2":
-			cancelOrders(); // still need to make body for method. waiting on jeff
+			cancelOrders(); 
 			break;
 
 		default:
@@ -72,8 +78,8 @@ public class StoreDriver {
 	}
 
 	private void viewOrders() throws SQLException {
-		System.out.println("VIEWING ORDERS");
-		System.out.println("1. View All Orders\n 2. View Open orders\n 3. View Closed orders\n 4. Sort orders\n 5. View Specific order\n");
+		System.out.println("********** VIEWING ORDERS **********");
+		System.out.println("1. View All Orders\n2. View Open orders\n3. View Closed orders\n4. Sort orders\n5. View Specific order\n");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
 		switch (opt) {
@@ -109,22 +115,25 @@ public class StoreDriver {
 	private void viewAll() throws SQLException {
 		ResultSet rs = sql.getAllOrders();
 		displayResults(rs);
+		viewOrders();
 
 	}
 
 	private void viewOpenOrders() throws SQLException {
 		ResultSet rs = sql.getOpenOrders();
 		displayResults(rs);
+		viewOrders();
 	}
 
 	private void viewClosedOrders() throws SQLException {
 		ResultSet rs = sql.getClosedOrders();
 		displayResults(rs);
+		viewOrders();
 	}
 
 	private void sortOrders() throws SQLException {
-		System.out.println("HOW WOULD YOU LIKE TO SORT THE ORDERS???");
-		System.out.println("1. Sort by descending total $$$ amount\n 2. View Orders exceeding given total\n");
+		System.out.println("********** HOW WOULD YOU LIKE TO SORT THE ORDERS **********");
+		System.out.println("1. Sort by descending total $$$ amount\n2. View Orders exceeding given total\n");
 		System.out.println("Enter option number");
 		String opt = scan.nextLine();
 		switch (opt) {
@@ -146,6 +155,7 @@ public class StoreDriver {
 	private void sortByDescendingAmount() throws SQLException {
 		ResultSet rs = sql.getAllOrdersDescendingTotal();
 		displayResults(rs);
+		viewOrders();
 	}
 
 	// displays orders that exceed total $$$ inputed from user
@@ -154,25 +164,40 @@ public class StoreDriver {
 		double total = scan.nextDouble();
 		ResultSet rs = sql.getAllOrdersWithTotalGreaterThan(total);
 		displayResults(rs);
+		sortByExceedingTotal();
 
 	}
 
 	private void viewSpecificOrder() throws SQLException {
-		System.out.println("ENTER ORDER ID OF ORDER YOU WANT TO SEE...");
+		System.out.println("********** ENTER ORDER ID OF ORDER YOU WANT TO SEE **********");
 		int orderId = scan.nextInt();
 		ResultSet rs = sql.getOrder(orderId);
 		displayResults(rs);
+		viewSpecificOrder();
 	}
 
-	// waiting on J
-	private void cancelOrders() {
-
+	
+	private void cancelOrders() throws SQLException {
+		System.out.println("Please ENTER ORDER ID To Cancel: ");
+		int orderId = scan.nextInt();
+		sql.deleteOrder(orderId); 
+		
+		if (orderId >=1) {
+			
+			System.out.println("*****Your order had been successful canceled*****");
+			
+		}else {
+			System.out.println("Record Not Found...");
+		}
+		
 	}
-
+	
+	
+	//_________Cutomers Menu_________
 	//Need to make customers methods
 	private void customers() throws SQLException {
-		System.out.println("CUSTOMERS MENU");
-		System.out.println("1. View All Customers\n 2. View Customer(s) by Zipcode");
+		System.out.println("********** CUSTOMERS MENU **********");
+		System.out.println("1. View All Customers\n2. View Customer(s) by Zipcode");
 		System.out.println("Enter Option Number");
 		String opt = scan.nextLine();
 		switch (opt) {
@@ -187,24 +212,30 @@ public class StoreDriver {
 				System.err.println("Sorry, that option is not available");
 				customers();
 		}
-	}
-	private void viewAllCustomers() throws SQLException {
-			ResultSet rs = sql.getAllCustomers();
-			displayResults(rs);
-	}
-	
-	private void viewCustomerByZip() throws SQLException {
-		System.out.println("Type in 5 digit zipcode to find Customer: ");
-		String zip = scan.nextLine();
-		ResultSet rs = sql.getCustomersByZip(zip);
-		displayResults(rs);
-	}
-	
+			
 
+	}
+	
+	private void viewAllCustomers() throws SQLException {
+		System.out.println("********** VIEWING ALL CUSTOEMRS **********");
+		ResultSet rs = sql.getAllCustomers();
+		displayResults(rs);
+		customers();
+	}
+
+	private void viewCustomerByZip() throws SQLException {
+			System.out.println("Type in 5 digit zipcode to find Customer(s)");
+			String zip = scan.nextLine();
+			ResultSet rs = sql.getCustomersByZip(zip);
+			displayResults(rs);
+			viewCustomerByZip();
+	}
+	
+	//_________Products Menu_________
 	//need to make methods for products
 	private void products() throws SQLException {
-		System.out.println("PRODUCTS MENU");
-		System.out.println("1. View All Products\n 2. View All Products from a Category");
+		System.out.println("********** PRODUCTS MENU **********");
+		System.out.println("1. View All Products\n2. View All Products from a Category");
 		System.out.println("Enter Option Number");
 		String opt = scan.nextLine();
 		switch (opt) {
@@ -222,32 +253,36 @@ public class StoreDriver {
 		}
 
 	}
+	
 	private void viewAllProducts() throws SQLException {
+		System.out.println("********* VIEWING ALL PRODUCTS **********");
 		ResultSet rs = sql.getAllProducts();
 		displayResults(rs);
-}
+		products();
+	}
 	
 	private void viewProductsFromCategory() throws SQLException {
-		System.out.println("Type Category to view Product: ");
+		System.out.println("Type Category to view Product");
 		String Catrgory = scan.nextLine();
 		ResultSet rs = sql.getCustomersByZip(Catrgory);
 		displayResults(rs);
-	}
+		viewProductsFromCategory();
+		}
 	
-	
+	//_________Shippers and Supplies Menu_________
 	//need to create method body for Ships and Supplies
 	private void shippersAndSuppliers() {
-		System.out.println("SHIPPERS AND SUPPLIERS MENU");
-		System.out.println("1. View Shippers\n 2. View Suppliers");
+		System.out.println("********** SHIPPERS AND SUPPLIERS MENU **********");
+		System.out.println("1. View Shippers\n2. View Suppliers");
 		System.out.println("Enter Option Number");
 		String opt = scan.nextLine();
 		switch (opt) {
 		case "1":
-			viewShippers();
+//			viewShippers();
 			break;
 			
 		case "2":
-			viewSuppliers();
+//			viewSuppliers();
 			break;
 			
 		default:
@@ -255,28 +290,63 @@ public class StoreDriver {
 			shippersAndSuppliers();
 		}
 	}
-	
-//	private void viewShippers() throws SQLException {
-//		ResultSet rs = sql.getAllShippers();
-//		displayResults(rs);
-//		
-	
 
 	// displays results when called
 	private void displayResults(ResultSet rs) throws SQLException {
 
 		ResultSetMetaData rsmd = rs.getMetaData();
-
-		for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-			System.out.println(rsmd.getColumnName(i));
-		}
-
+		int columnCount = rsmd.getColumnCount();
+		int[] columnWidths = new int[columnCount];
+		List<Object[]> rowList = new ArrayList<>();
+		
 		while (rs.next()) {
-			for (int i = 1; i <= rsmd.getColumnCount(); i++)
-				System.out.println(rs.getObject(i));
-			//rando
 
+			Object[] row = new Object[columnCount];
+			for (int i = 1; i <= columnCount; i++) {
+				row[i - 1] = rs.getObject(i);
+			}
+			rowList.add(row);
 		}
+		
+		for (int i = 1; i <= columnCount; i++) {
+			if (rsmd.getColumnName(i).length() > columnWidths[i - 1]) {
+				columnWidths[i - 1] = rsmd.getColumnName(i).length();
+			}
+		}
+		
+		rowList.forEach(r -> {
+			for (int j = 0; j < columnCount; j++) {
+				String value;
+				if (r[j] != null) value = r[j].toString();
+				else value = "null";
+				if (value.length() > columnWidths[j]) {
+					columnWidths[j] = value.length();
+				}
+			}
+		});
+		
+		String horizontalLine = "+";
+		for (int i = 0; i < columnWidths.length; i++) {
+			for (int j = 0; j < columnWidths[i] + 2; j++) horizontalLine += "-";
+			horizontalLine += "+";
+		}
+
+
+		System.out.println(horizontalLine);
+		System.out.print("|");
+		for (int i = 0; i < columnCount; i++) {
+			System.out.printf(" %-" + columnWidths[i] + "s |", rsmd.getColumnName(i + 1));
+		}
+		System.out.println();
+		System.out.println(horizontalLine);
+		rowList.forEach(r -> {
+			System.out.print("|");
+			for (int j = 0; j < columnCount; j++) {
+				System.out.printf(" %-" + columnWidths[j] + "s |", r[j]);
+			}
+			System.out.println();
+		});
+		System.out.println(horizontalLine);
 	}
 
 }
