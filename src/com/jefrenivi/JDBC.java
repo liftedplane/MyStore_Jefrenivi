@@ -58,7 +58,7 @@ public class JDBC implements Closeable {
     
     public ResultSet getAllOrdersWithTotalGreaterThan(double total) throws SQLException {
         String sql = 
-                "SELECT OrderID, Customer, Name, Payment, OrderDate, ShipDate, CONCAT('$', FORMAT(Total, 2)) AS Total "
+                "SELECT OrderID, Customer, Shipper, Payment, OrderDate, ShipDate, CONCAT('$', FORMAT(Total, 2)) AS Total "
                 + "FROM OrdersMinTotal WHERE Total > ?";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setDouble(1, total);
