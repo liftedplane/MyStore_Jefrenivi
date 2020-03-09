@@ -1,5 +1,6 @@
 package com.jefrenivi;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -24,7 +25,7 @@ public class StoreDriver {
 	//_________Welcome page_________
 	private void welcomePage() throws SQLException {
 		System.out.println("\t********** WELCOME TO JEFRENIVI **********\n");
-		System.out.println("Select options below\n1. Orders\n2. Customers\n3. Products\n4. Shippers and Suppliers\n");
+		System.out.println("Select options below\n1. Orders\n2. Customers\n3. Products\n4. Shippers and Suppliers\n5. Exit");
 		System.out.println("\t<<<<<<<<<< Enter Option Number >>>>>>>>>>\n");
 		String opt = scan.nextLine();
 
@@ -44,6 +45,15 @@ public class StoreDriver {
 		case "4":
 			shippersAndSuppliers();
 			break;
+			
+		case "5":
+			try {
+				System.out.println("Goodbye!");
+				sql.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			System.exit(0);
 
 		default:
 			System.err.println("Sorry, that option is not available");
