@@ -29,9 +29,9 @@ public class JDBC implements Closeable {
         System.out.println("Connecting to DB...");
         try {
 			con = DriverManager.getConnection(url, user, password);
-			System.out.println("Connected to " + url);
+			System.out.println("Connected to " + url + "\n");
 		} catch (SQLException e) {
-			System.out.println("Error connecting to " + url);
+			System.out.println("Error connecting to " + url + "\n");
 			e.printStackTrace();
 		}
 	}
