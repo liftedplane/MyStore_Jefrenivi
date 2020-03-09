@@ -23,6 +23,7 @@ public class StoreDriver {
 	
 	//_________Welcome page_________
 	private void welcomePage() throws SQLException {
+
 		System.out.println("\t********** WELCOME TO JEFRENIVI **********\n");
 		System.out.println("Select options below\n1. Orders\n2. Customers\n3. Products\n4. Shippers and Suppliers\n");
 		System.out.println("\t<<<<<<<<<< Enter Option Number >>>>>>>>>>\n");
@@ -57,6 +58,7 @@ public class StoreDriver {
 		System.out.println("\t********** ORDERS MENU **********");
 		System.out.println("1. View Orders\n2. Cancel Orders\n3. Go Back\n");
 		System.out.println("\t<<<<<<<<<< Enter Option Number >>>>>>>>>>");
+
 		String opt = scan.nextLine();
 		switch (opt) {
 		case "1":
@@ -65,6 +67,10 @@ public class StoreDriver {
 
 		case "2":
 			cancelOrders();
+			break;
+		
+		case "3":
+			welcomePage();
 			break;
 		
 		case "3":
@@ -83,6 +89,7 @@ public class StoreDriver {
 		System.out.println("\t********** VIEWING ORDERS **********");
 		System.out.println("1. View All Orders\n2. View Open Orders\n3. View Closed Orders\n4. Sort Orders\n5. View Specific Order\n6. Go Back\n7. Main Menu\n");
 		System.out.println("\t<<<<<<<<<< Enter Option Number >>>>>>>>>>");
+    
 		String opt = scan.nextLine();
 		switch (opt) {
 		case "1":
@@ -142,9 +149,11 @@ public class StoreDriver {
 	}
 
 	private void sortOrders() throws SQLException {
+
 		System.out.println("\t<<<<<<<<<< HOW WOULD YOU LIKE TO SORT THE ORDERS >>>>>>>>>>");
 		System.out.println("1. Sort By Descending Total $$$ Amount\n2. View Orders Exceeding Given Total\n3. Go Back\n4. Main Menu\n");
 		System.out.println("\t<<<<<<<<<< Enter Option Number >>>>>>>>>>");
+
 		String opt = scan.nextLine();
 		switch (opt) {
 		case "1":
@@ -178,6 +187,7 @@ public class StoreDriver {
 
 	// displays orders that exceed total $$$ inputed from user
 	private void sortByExceedingTotal() throws SQLException {
+
 		try {
 		System.out.println("\t<<<<<<<<<< Enter $$$ Amount >>>>>>>>>>");
 		String input = scan.nextLine();
@@ -234,9 +244,11 @@ public class StoreDriver {
 
 	//_________Cutomers Menu_________
 	private void customers() throws SQLException {
+
 		System.out.println("\t********** CUSTOMERS MENU **********");
 		System.out.println("1. View All Customers\n2. View Customer(s) by Zipcode\n3. View Customer(s) Lifetime Total\n4. Go Back\n");
 		System.out.println("\t<<<<<<<<<< Enter Option Number >>>>>>>>>>");
+
 		String opt = scan.nextLine();
 		switch (opt) {
 			case "1":
@@ -246,12 +258,9 @@ public class StoreDriver {
 			case "2":
 				viewCustomerByZip();
 				break;
-				
-				
 			case "3":
 				viewCustomerTotal();
 				break;
-				
 			case "4":
 				welcomePage();
 				break;
@@ -345,6 +354,7 @@ public class StoreDriver {
 		}
 	
 	//_________Shippers and Supplies Menu_________
+
 	private void shippersAndSuppliers() throws SQLException {
 		System.out.println("\t********** SHIPPERS AND SUPPLIERS MENU **********");
 		System.out.println("1. View Shippers\n2. View Suppliers\n3. Go Back\n");
@@ -357,6 +367,10 @@ public class StoreDriver {
 	
 		case "2":
 			viewSuppliers();
+			break;
+			
+		case "3":
+			welcomePage();
 			break;
 			
 		case "3":
