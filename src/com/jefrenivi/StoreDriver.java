@@ -193,16 +193,25 @@ public class StoreDriver {
 	}
 
 	private void viewSpecificOrder() throws SQLException {
-		System.out.println("********** ENTER ORDER ID OF ORDER YOU WANT TO SEE **********");
-		int orderId = scan.nextInt();
-		ResultSet rs = sql.getOrder(orderId);
-		displayResults(rs);
-		viewSpecificOrder();
+		try{
+			System.out.println("********** ENTER ORDER ID OF ORDER YOU WANT TO SEE **********");
+			int orderId = scan.nextInt();
+			ResultSet rs = sql.getOrder(orderId);
+			displayResults(rs);
+			rs = sql.getProductsFromOrder(orderId);
+			displayResults(rs);
+			orders();	
+			
+		} catch (NumberFormatException e) {
+			System.out.println("Sorry, that wasn't a number. Please Try Again");
+			viewSpecificOrder();
+			
+		}
 	}
 
 	// waiting on J
 	private void cancelOrders() throws SQLException {
-		System.out.println("Please ENTER ORDER ID You Want To  Cancel: ");
+		System.out.println("Please Enter Order ID You Want To Cancel");
 		int orderId = scan.nextInt();
 		sql.deleteOrder(orderId); 
 		
@@ -244,12 +253,11 @@ public class StoreDriver {
 				System.err.println("Sorry, that option is not available");
 				customers();
 		}
-			
 
 	}
 	
 	private void viewAllCustomers() throws SQLException {
-		System.out.println("********** VIEWING ALL CUSTOEMRS **********");
+		System.out.println("********** VIEWING ALL CUSTOMERS **********");
 		ResultSet rs = sql.getAllCustomers();
 		displayResults(rs);
 		customers();
@@ -297,12 +305,17 @@ public class StoreDriver {
 		products();
 	}
 	
+	//Need to make a view all cat. statement in JDBC to be used in this method. Will help user select what category to view.
 	private void viewProductsFromCategory() throws SQLException {
-		System.out.println("Type Category to view Product");
-		String Catrgory = scan.nextLine();
-		ResultSet rs = sql.getCustomersByZip(Catrgory);
+		ResultSet rs = sql.getAllCategories();
 		displayResults(rs);
-		viewProductsFromCategory();
+		System.out.println("Type Category Number to view Products");
+		String input = scan.nextLine();
+		int category = Integer.parseInt(input);
+		rs = sql.getProductsFromCategory(category);
+		displayResults(rs);
+		products();
+		
 		}
 	
 	//_________Shippers and Supplies Menu_________
