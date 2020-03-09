@@ -94,16 +94,17 @@ public class JDBC implements Closeable {
 		return ps.executeQuery();
 	}
 	
-	public int deleteOrder(int orderid) throws SQLException {
+	public void deleteOrder(int orderid) throws SQLException {
 		String sql = "DELETE FROM OrderDetails WHERE OrderID = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, orderid);
-		ps.addBatch();
+		ps.execute();
 		sql = "DELETE FROM Orders WHERE OrderID = ?";
+		ps = con.prepareStatement(sql);
 		ps.setInt(1, orderid);
-		ps.addBatch();
-		int[] rowsUpdated = ps.executeBatch();
-		return IntStream.of(rowsUpdated).sum();
+		ps.execute();
+//		int[] rowsUpdated = ps.executeBatch();
+//		return IntStream.of(rowsUpdated).sum();
 	}
 	
 	// ---------- PRODUCT QUERIES ----------
@@ -144,7 +145,9 @@ public class JDBC implements Closeable {
 	}
 	
 	public ResultSet getCustomersByLifetimeTotals(double total) throws SQLException {
-		String sql = "SELECT * FROM AllCustomersWithPurchaseTotals WHERE 'Total Purchases' > ?";
+		String sql = "SELECT `Customer ID`, Name, Email, Phone, Street, City, State, Zip, "
+				+ "CONCAT('$', FORMAT(`Total Purchases`, 2)) AS 'Total Purchases'"
+				+ " FROM AllCustomersWithPurchaseTotals WHERE 'Total Purchases' > ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setDouble(1, total);
 		return ps.executeQuery();
