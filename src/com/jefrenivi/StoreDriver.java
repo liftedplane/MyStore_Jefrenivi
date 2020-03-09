@@ -212,7 +212,7 @@ public class StoreDriver {
 			displayResults(rs);
 			rs = sql.getProductsFromOrder(orderId);
 			displayResults(rs);
-			orders();	
+			viewOrders();	
 			
 		} catch (NumberFormatException e) {
 			System.err.println("Sorry, that wasn't a number. Please Try Again");
