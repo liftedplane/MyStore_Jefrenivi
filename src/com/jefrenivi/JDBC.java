@@ -147,7 +147,7 @@ public class JDBC implements Closeable {
 	public ResultSet getCustomersByLifetimeTotals(double total) throws SQLException {
 		String sql = "SELECT `Customer ID`, Name, Email, Phone, Street, City, State, Zip, "
 				+ "CONCAT('$', FORMAT(`Total Purchases`, 2)) AS 'Total Purchases'"
-				+ " FROM AllCustomersWithPurchaseTotals WHERE 'Total Purchases' > ?";
+				+ " FROM AllCustomersWithPurchaseTotals WHERE `Total Purchases` > ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setDouble(1, total);
 		return ps.executeQuery();

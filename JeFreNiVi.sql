@@ -206,8 +206,6 @@ JOIN Shippers s ON o.ShipperID = s.ShipperID
 JOIN Billables b ON o.BillableID = b.BillableID
 ORDER BY o.OrderID;
 
-select * from allorders;
-
 CREATE VIEW OrdersDescendingTotal AS
 SELECT 
 	LPAD(o.OrderId, 8, '0') AS 'Order ID', 
@@ -312,7 +310,7 @@ JOIN Addresses a on s.AddressID = a.AddressID;
 
 CREATE VIEW AllCustomersWithPurchaseTotals AS
 SELECT
-	LPAD(c.CustomerID, 8, '0') AS 'Cutomer ID',
+	LPAD(c.CustomerID, 8, '0') AS 'Customer ID',
     c.Name,
     c.Email,
     c.Phone,
@@ -320,7 +318,7 @@ SELECT
     a.City,
     a.State,
     a.Zip,
-    CONCAT ('$', FORMAT(SUM(od.Price * od.Quantity * (1 - od.Discount)), 2)) AS 'Total Purchases'
+    SUM(od.Price * od.Quantity * (1 - od.Discount)) AS 'Total Purchases'
 FROM Customers c
 JOIN Addresses a ON c.AddressID = a.AddressID
 JOIN Orders o ON o.CustomerID = c.CustomerID
@@ -335,3 +333,5 @@ SELECT
     c.Description
 FROM Categories c
 JOIN Categories p ON p.CategoryID = c.ParentCategoryID;
+
+select * from AllCustomersWithPurchaseTotals where `Total Purchases` > 50;
