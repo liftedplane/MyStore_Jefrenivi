@@ -281,7 +281,7 @@ SELECT
     a.Zip
 FROM Customers c
 JOIN Addresses a ON c.AddressID = a.AddressID;
-
+                       
 CREATE VIEW AllSuppliers AS
 SELECT
 	LPAD(s.SupplierID, 8, '0') AS 'Supplier ID',
@@ -324,7 +324,7 @@ JOIN Addresses a ON c.AddressID = a.AddressID
 JOIN Orders o ON o.CustomerID = c.CustomerID
 JOIN OrderDetails od ON od.OrderID = o.OrderID
 GROUP BY c.CustomerID;
-
+                                  
 CREATE VIEW AllCategories AS
 SELECT
 	c.CategoryID AS 'Category ID',
@@ -333,5 +333,4 @@ SELECT
     c.Description
 FROM Categories c
 JOIN Categories p ON p.CategoryID = c.ParentCategoryID;
-
 select * from AllCustomersWithPurchaseTotals where `Total Purchases` > 50;
