@@ -177,11 +177,18 @@ public class StoreDriver {
 
 	// displays orders that exceed total $$$ inputed from user
 	private void sortByExceedingTotal() throws SQLException {
+		try {
 		System.out.println("Enter $$$ Amount");
-		double total = scan.nextDouble();
-		ResultSet rs = sql.getAllOrdersWithTotalGreaterThan(total);
-		displayResults(rs);
-		sortOrders();
+		String input = scan.nextLine();
+			double total = Double.parseDouble(input);
+			ResultSet rs = sql.getAllOrdersWithTotalGreaterThan(total);
+			displayResults(rs);
+			sortOrders();
+			
+		} catch (NumberFormatException e) {
+			System.out.println("Sorry, that wasn't a number. Try Again!");
+			sortByExceedingTotal();
+		}
 
 	}
 
@@ -194,9 +201,23 @@ public class StoreDriver {
 	}
 
 	// waiting on J
-	private void cancelOrders() {
-
+	private void cancelOrders() throws SQLException {
+		System.out.println("Please ENTER ORDER ID You Want To  Cancel: ");
+		int orderId = scan.nextInt();
+		sql.deleteOrder(orderId); 
+		
+		if (orderId >=1) {
+			
+			System.out.println("***** Your order " + orderId + " was cancelled Successfully *****");
+			orders();
+			
+		}else {
+			System.out.println("Record Not Found, Please Try Again...");
+			orders();
+		}
+		
 	}
+
 	
 	
 	//_________Cutomers Menu_________
