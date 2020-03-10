@@ -24,6 +24,7 @@ public class StoreDriver {
 	
 	//_________Welcome page_________
 	private void welcomePage() throws SQLException {
+		clrscr();
 		System.out.println("\t********** WELCOME TO JEFRENIVI **********\n");
 		System.out.println("Select options below\n1. Orders\n2. Customers\n3. Products\n4. Shippers and Suppliers\n5. Exit");
 		System.out.println("\t<<<<<<<<<< Enter Option Number >>>>>>>>>>\n");
@@ -449,5 +450,15 @@ public class StoreDriver {
 			System.out.println();
 		});
 		System.out.println(horizontalLine);
+	}
+	
+	public static void clrscr() {
+	    //Clears Screen in java
+	    try {
+	        if (System.getProperty("os.name").contains("Windows"))
+	            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+	        else
+	            Runtime.getRuntime().exec("clear");
+	    } catch (IOException | InterruptedException ex) {}
 	}
 }
